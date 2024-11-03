@@ -1,7 +1,7 @@
 ## Data-efficient and interpretable inverse materials design using a disentangled variational autoencoder
 Cheng Zeng, Zulqarnain Khan, Nathan Post. arXiv preprint, arXiv:2409.06740
 
-To run the notebooks, some relevant Python packages should be installed before hand including `pyro`, `shap`, `pandas`, `seaborn`, `numpy`, `scipy` and `scikit-learn`.
+To run the notebooks, some relevant Python packages should be installed, including `pyro`, `shap`, `pandas`, `seaborn`, `numpy`, `scipy` and `scikit-learn`.
 
 ## Folder structures
 
