@@ -12,9 +12,9 @@ top30 =['Fe', 'Ni', 'Cr', 'Co', 'Al', 'Ti', 'Cu',
 ftrs = ['tm', 'vac', 'vm',  'k', 'ar', 'chi', 'delta_s_mix', 'delta_h_mix']
 ftrs_names = ['tm', 'vac', 'vm',  'k', 'delta', 'delta_chi', 'delta_s_mix', 'delta_h_mix']
 
-with open('../data/look_up_dict.pkl', 'rb') as pf:
+with open('/home/hughes/usr/d_vae_hea/data/look_up_dict.pkl', 'rb') as pf:
     look_up_dict = pickle.load(pf)
-with open('../data/mixing_enthalpy_dict.pkl', 'rb') as pf:
+with open('/home/hughes/usr/d_vae_hea/data/mixing_enthalpy_dict.pkl', 'rb') as pf:
     mixing_enthalpy_dict = pickle.load(pf)
 
 def vectorize_alloy(alloy):
