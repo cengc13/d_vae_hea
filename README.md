@@ -1,5 +1,5 @@
 ## Data-efficient and interpretable inverse materials design using a disentangled variational autoencoder
-Cheng Zeng, Zulqarnain Khan, Nathan Post. https://arxiv.org/abs/2409.06740
+Cheng Zeng, Zulqarnain Khan, Nathan Post. Accepted at [AI & Materials](https://www.elspub.com/papers/j/1838650894880686080.html)
 
 To run the notebooks, some relevant Python packages should be installed, including `pyro`, `shap`, `pandas`, `seaborn`, `numpy`, `scipy` and `scikit-learn`.
 
