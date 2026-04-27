@@ -54,7 +54,7 @@ def evaluate_model(data_loader, model, losses, cuda=False):
         xs = xs.view(batchsize, -1)
         es = es.view(batchsize, -1)
         for loss_id, loss in enumerate(losses):
-            epoch_losses[loss_id] += loss.step(xs, es, ys)
+            epoch_losses[loss_id] += loss.evaluate_loss(xs, es, ys)
 
     return epoch_losses
 

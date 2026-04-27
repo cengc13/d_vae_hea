@@ -110,7 +110,6 @@ def main():
         "mode": "min",
         "factor": 0.5,
         "patience": 200,
-        "verbose": True,
     })
     loss_basic = SVI(model.model, model.guide, scheduler, loss=Trace_ELBO())
     loss_aux = SVI(model.model_classify, model.guide_classify, scheduler, loss=Trace_ELBO())
