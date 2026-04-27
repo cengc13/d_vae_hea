@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import matplotlib
 import pickle
+from pathlib import Path
 
 top30 =['Fe', 'Ni', 'Cr', 'Co', 'Al', 'Ti', 'Cu',
         'Mo', 'V', 'Nb', 'Mn', 'Zr', 'Ta', 'W', 'Hf',
@@ -12,10 +13,22 @@ top30 =['Fe', 'Ni', 'Cr', 'Co', 'Al', 'Ti', 'Cu',
 ftrs = ['tm', 'vac', 'vm',  'k', 'ar', 'chi', 'delta_s_mix', 'delta_h_mix']
 ftrs_names = ['tm', 'vac', 'vm',  'k', 'delta', 'delta_chi', 'delta_s_mix', 'delta_h_mix']
 
-with open('/home/hughes/usr/d_vae_hea/data/look_up_dict.pkl', 'rb') as pf:
-    look_up_dict = pickle.load(pf)
-with open('/home/hughes/usr/d_vae_hea/data/mixing_enthalpy_dict.pkl', 'rb') as pf:
-    mixing_enthalpy_dict = pickle.load(pf)
+DATA_DIR = Path(__file__).resolve().parents[1] / "data"
+
+
+def _load_pickle(filename):
+    path = DATA_DIR / filename
+    if not path.exists():
+        raise FileNotFoundError(
+            f"Required data file not found: {path}. "
+            "Make sure the repository data files are present."
+        )
+    with path.open("rb") as pf:
+        return pickle.load(pf)
+
+
+look_up_dict = _load_pickle("look_up_dict.pkl")
+mixing_enthalpy_dict = _load_pickle("mixing_enthalpy_dict.pkl")
 
 def vectorize_alloy(alloy):
     pattern = re.compile(r'([A-Z][a-z]*)(\d*\.*\d*?(?=\D|$))')
