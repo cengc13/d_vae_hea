@@ -112,7 +112,7 @@ def iterative_inverse_design(start_alloy, model, target_prob=0.6, max_iter=10):
         comp, _, __ = calculate_compositions(alloy)
         with torch.no_grad():
             z = model.encoder_z([torch.tensor(comp, dtype=torch.float32), y])[0]
-            inv_comps = model.decoder([z.unsqueeze(0), 1 - y])
+            inv_comps = model.decoder([z.unsqueeze(0), (1 - y).unsqueeze(0)])
         inv_comps_pct = (torch.round(inv_comps, decimals=2) * 100).numpy().squeeze()
         alloy = "".join([str(e) + str(int(c)) for e, c in zip(top30, inv_comps_pct) if c > 0])
 
