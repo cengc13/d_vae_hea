@@ -1,0 +1,31 @@
+# Conda environment for d-vae-hea
+# GPU (CUDA 12.1):  conda env create -f environment.yml
+# CPU-only:         conda env create -f environment.yml --override-channels \
+#                     -c pytorch -c conda-forge  (then replace pytorch-cuda with cpuonly)
+name: d-vae-hea
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  # PyTorch — GPU build (CUDA 12.1)
+  - pytorch=2.4
+  - pytorch-cuda=12.1
+  # Scientific stack — versions chosen for mutual compatibility
+  - numpy=1.26          # numba 0.60 requires numpy >=1.22,<1.27
+  - scipy=1.13
+  - pandas=2.2
+  - scikit-learn=1.5
+  - matplotlib=3.9
+  - seaborn=0.13
+  - plotly=5
+  # numba >=0.60 is required for numpy 1.26; shap pins numba as a dependency
+  - numba=0.60
+  - pip
+  - pip:
+      # pyro-ppl is most reliably installed via pip; conda-forge build can lag
+      - pyro-ppl==1.9.1
+      # shap 0.45+ works with numba 0.60 + numpy 1.26
+      - shap>=0.45.0
