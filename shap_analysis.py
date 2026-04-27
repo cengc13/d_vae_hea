@@ -44,6 +44,33 @@ def parse_args():
     return p.parse_args()
 
 
+def normalize_shap_output(shap_values, expected_value):
+    """Handle SHAP's old list output and newer ndarray output consistently."""
+    if isinstance(shap_values, list):
+        values = np.asarray(shap_values[0])
+    else:
+        values = np.asarray(shap_values)
+        if values.ndim == 3:
+            if values.shape[2] != 1:
+                raise ValueError(
+                    f"Unsupported SHAP output shape {values.shape}; expected a single output classifier."
+                )
+            values = values[:, :, 0]
+
+    base_value = np.asarray(expected_value)
+    if base_value.ndim > 0:
+        base_value = float(base_value.reshape(-1)[0])
+    else:
+        base_value = float(base_value)
+
+    if values.ndim != 2:
+        raise ValueError(
+            f"Unexpected SHAP values shape {values.shape}; expected (n_samples, n_features)."
+        )
+
+    return values, base_value
+
+
 def main():
     args = parse_args()
     data_dir = Path(args.data_dir)
@@ -75,9 +102,13 @@ def main():
 
     print(f"Computing SHAP values for {len(test_engg)} test samples...")
     shap_values = explainer.shap_values(test_engg)
+    shap_values, expected_value = normalize_shap_output(
+        shap_values, explainer.expected_value
+    )
+    print(f"SHAP values shape: {shap_values.shape}")
 
     # Summary beeswarm plot
-    shap.summary_plot(shap_values[0], test_engg, FEATURE_NAMES, show=False)
+    shap.summary_plot(shap_values, test_engg, FEATURE_NAMES, show=False)
     plt.title("Multiple Phase  <--|-->  Single Phase")
     plt.tight_layout()
     plt.savefig(figures_dir / "SHAP_summary.pdf", dpi=300)
@@ -88,10 +119,10 @@ def main():
     # Waterfall plots for each test sample
     waterfall_dir = figures_dir / "shap_waterfall"
     waterfall_dir.mkdir(exist_ok=True)
-    for i in range(len(shap_values[0])):
+    for i in range(len(shap_values)):
         exp = shap.Explanation(
-            shap_values[0][i],
-            explainer.expected_value[0],
+            values=shap_values[i],
+            base_values=expected_value,
             data=test_engg[i],
             feature_names=FEATURE_NAMES,
         )
