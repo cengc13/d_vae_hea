@@ -18,14 +18,14 @@ The model achieves **87.7% test accuracy** using 864 labelled and 296 unlabelled
 
 ```bash
 # GPU (CUDA 12.1)
-conda env create -f environment.yml
-conda activate d-vae-hea
+mamba env create -f environment.yml
+mamba activate d-vae-hea
 
 # CPU-only — edit environment.yml first:
 #   replace  pytorch-cuda=12.1  with  cpuonly
 #   and add  -c pytorch  to the channel list
-conda env create -f environment.yml
-conda activate d-vae-hea
+mamba env create -f environment.yml
+mamba activate d-vae-hea
 ```
 
 ### Package compatibility notes
