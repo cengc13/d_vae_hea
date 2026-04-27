@@ -17,13 +17,15 @@ The model achieves **87.7% test accuracy** using 864 labelled and 296 unlabelled
 ### Conda (recommended)
 
 ```bash
-# GPU (CUDA 12.1)
+# GPU (PyTorch cu128 wheel for CUDA 12.8)
 mamba env create -f environment.yml
 mamba activate d-vae-hea
 
 # CPU-only — edit environment.yml first:
-#   replace  pytorch-cuda=12.1  with  cpuonly
-#   and add  -c pytorch  to the channel list
+#   replace
+#     --extra-index-url https://download.pytorch.org/whl/cu128
+#   with
+#     --extra-index-url https://download.pytorch.org/whl/cpu
 mamba env create -f environment.yml
 mamba activate d-vae-hea
 ```
@@ -32,13 +34,14 @@ mamba activate d-vae-hea
 
 | Package | Constraint | Reason |
 |---------|-----------|--------|
-| `numba` | ≥ 0.60 | `numba` 0.56–0.58 only support `numpy` ≤ 1.23; `shap` requires `numba` at runtime |
-| `numpy` | 1.26.x | Upper bound for `numba` 0.60; lower bound for `pandas` 2.x |
-| `pyro-ppl` | 1.9.x | Requires `torch` ≥ 2.0; installed via `pip` because the conda-forge build lags behind |
-| `torch` | 2.4 + CUDA 12.1 | Must match the CUDA toolkit on your machine — check with `nvcc --version` |
+| `python` | 3.11 | Safe target for the refreshed stack; `pyro-ppl` 1.9.1 officially supports up to Python 3.11 |
+| `numba` | 0.61.2 | Supports `numpy` 2.2 and keeps SHAP runtime compatibility |
+| `numpy` | 2.2.x | Works with `numba` 0.61.2 and current `pandas` / `scipy` releases |
+| `pyro-ppl` | 1.9.1 | Requires `torch` ≥ 2.0; still installed via `pip` |
+| `torch` | 2.7.0 + CUDA 12.8 | Official `cu128` wheels are provided by PyTorch via `pip` |
 
-If you are on a different CUDA version, replace `pytorch-cuda=12.1` with the matching version
-(e.g. `pytorch-cuda=11.8`) before creating the environment.
+If you are on a different CUDA runtime, replace the PyTorch wheel index in `environment.yml`
+with the matching one from the official PyTorch install matrix, for example `cu126` or `cpu`.
 
 ## Project structure
 

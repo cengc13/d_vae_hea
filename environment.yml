@@ -1,31 +1,29 @@
 # Conda environment for d-vae-hea
-# GPU (CUDA 12.1):  conda env create -f environment.yml
-# CPU-only:         conda env create -f environment.yml --override-channels \
-#                     -c pytorch -c conda-forge  (then replace pytorch-cuda with cpuonly)
+# GPU (CUDA 12.8 wheels):  conda env create -f environment.yml
+# CPU-only:                remove the torch line below and replace it with:
+#                            - --extra-index-url https://download.pytorch.org/whl/cpu
+#                            - torch==2.7.0
 name: d-vae-hea
 channels:
-  - pytorch
-  - nvidia
   - conda-forge
   - defaults
 dependencies:
-  - python=3.10
-  # PyTorch — GPU build (CUDA 12.1)
-  - pytorch=2.4
-  - pytorch-cuda=12.1
-  # Scientific stack — versions chosen for mutual compatibility
-  - numpy=1.26          # numba 0.60 requires numpy >=1.22,<1.27
-  - scipy=1.13
-  - pandas=2.2
-  - scikit-learn=1.5
-  - matplotlib=3.9
+  - python=3.11
+  # Scientific stack — versions chosen to work with torch 2.7 + modern SHAP/Numba
+  - numpy=2.2
+  - scipy=1.15
+  - pandas=2.3
+  - scikit-learn=1.6
+  - matplotlib=3.10
   - seaborn=0.13
-  - plotly=5
-  # numba >=0.60 is required for numpy 1.26; shap pins numba as a dependency
-  - numba=0.60
+  - plotly=6
+  - numba=0.61.2
   - pip
   - pip:
-      # pyro-ppl is most reliably installed via pip; conda-forge build can lag
+      # PyTorch 2.7+ CUDA 12.8 wheels are published via the official PyTorch index.
+      - --extra-index-url https://download.pytorch.org/whl/cu128
+      - torch==2.7.0
+      # pyro-ppl is most reliably installed via pip; Pyro 1.9.1 requires torch >=2.0.
       - pyro-ppl==1.9.1
-      # shap 0.45+ works with numba 0.60 + numpy 1.26
-      - shap>=0.45.0
+      # SHAP 0.48 has wheels for Python 3.11 and works with recent NumPy/Numba.
+      - shap==0.48.0
