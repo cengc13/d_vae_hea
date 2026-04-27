@@ -113,6 +113,79 @@ python train.py --epochs 20000 --lr 1e-4 --hidden-dims 100 100 --aux-loss-multip
 ```
 Data splits are loaded from `data/*.pk` if present, otherwise created from the raw CSVs. Checkpoints are saved to `models/`.
 
+## Training
+
+Use `train.py` to train a fresh SSVAE checkpoint from the processed HEA data:
+
+```bash
+python train.py
+```
+
+By default this trains for `20000` epochs on CPU and writes checkpoints under `models/`.
+If you have a CUDA-capable GPU available, add `--cuda`:
+
+```bash
+python train.py --cuda
+```
+
+### Recommended training command
+
+```bash
+python train.py \
+  --cuda \
+  --epochs 20000 \
+  --lr 1e-4 \
+  --batch-size 32 \
+  --z-dim 2 \
+  --hidden-dims 100 100 \
+  --aux-loss-multiplier 10 \
+  --save-interval 1000
+```
+
+### Important training arguments
+
+| Argument | Default | Description |
+|----------|---------|-------------|
+| `--data-dir` | `data` | Directory containing the CSV / pickle data files |
+| `--model-dir` | `models` | Output directory for checkpoints |
+| `--epochs` | `20000` | Number of training epochs |
+| `--lr` | `1e-4` | Initial Adam learning rate |
+| `--batch-size` | `32` | Batch size for both labelled and unlabelled loaders |
+| `--z-dim` | `2` | Latent-space dimensionality |
+| `--hidden-dims` | `100 100` | Hidden-layer sizes for the encoder / decoder MLPs |
+| `--aux-loss-multiplier` | `10.0` | Weight on the auxiliary supervised classification loss |
+| `--save-interval` | `1000` | Save an intermediate checkpoint every N epochs |
+| `--cuda` | off | Enable GPU training if CUDA is available |
+
+### What the training script does
+
+1. Loads the cached splits from `data/labelled_hea.pk`, `data/unlabelled_hea.pk`, `data/validation_hea.pk`, and `data/test_hea.pk`.
+2. If those files do not exist, it rebuilds the splits from `data/HEA_top30_comps.csv` and `data/HEA_feature_engineered.csv` and saves them back to `data/`.
+3. Trains the semi-supervised VAE with Pyro SVI using both labelled and unlabelled batches.
+4. Tracks train and validation classification accuracy each epoch.
+5. Saves the best checkpoints as `models/ssvae_best_train.model` and `models/ssvae_best_val.model`.
+6. Always writes a final timestamped checkpoint plus `models/ssvae.model` at the end of training.
+
+### Training outputs
+
+During training, the script prints per-epoch logs like:
+
+```text
+Epoch   999 | elbo: 0.1234 | train_acc: 0.8912 | val_acc: 0.8667
+```
+
+When training completes, it also reports the final test accuracy:
+
+```text
+Test accuracy: 0.8770
+```
+
+To evaluate a newly trained checkpoint, replace `models/ssvae.model` if needed and run:
+
+```bash
+python evaluate.py
+```
+
 ## Model architecture
 
 | Component | Input | Output | Purpose |
