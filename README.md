@@ -136,7 +136,7 @@ Training uses Pyro's SVI with a Trace-ELBO objective plus an auxiliary supervise
 ## Citation
 
 ```
-Cheng Zeng, Zulqarnain Khan, Nathan Post.
-Data-efficient and interpretable inverse materials design using a disentangled variational autoencoder.
-AI & Materials (Editor's Choice). https://www.elspub.com/papers/j/1838650894880686080.html
+Zeng C, Khan Z, Post N. Data-efficient and interpretable inverse materials design
+using a disentangled variational autoencoder. AI Mater. 2025;1(1):0002.
+doi:10.55092/aimat20250002.
 ```
