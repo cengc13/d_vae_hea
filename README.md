@@ -10,8 +10,6 @@ Using `PyTorch` and `Pyro`, this repository implements a **Semi-Supervised Varia
 - Iterative inverse design: find compositions likely to form a target phase
 - Interpretability via SHAP feature attribution
 
-The model achieves **87.7% test accuracy** using 864 labelled and 296 unlabelled training samples.
-
 ## Installation
 
 ### Conda (recommended)
