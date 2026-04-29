@@ -3,7 +3,7 @@ Cheng Zeng, Zulqarnain Khan, Nathan Post. Accepted at [AI & Materials](https://w
 
 ## Overview
 
-This repository implements a **Semi-Supervised Variational Autoencoder (SSVAE)** for high-entropy alloy (HEA) phase prediction and inverse design. The model learns a disentangled 2D latent space from alloy composition and thermodynamic features, enabling:
+Using `PyTorch` and `Pyro`, this repository implements a **Semi-Supervised Variational Autoencoder (SSVAE)** for high-entropy alloy (HEA) phase prediction and inverse design. The model learns a disentangled 2D latent space from alloy composition and thermodynamic features, enabling:
 
 - Phase classification (single-phase vs. multi-phase) from engineered features
 - Reconstruction and generation of alloy compositions via the latent space
